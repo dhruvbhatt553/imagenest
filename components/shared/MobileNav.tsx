@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
-import { Sheet, SheetContent, SheetTrigger,Button } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import Link from "next/link";
 import Image from "next/image";
 import { SignedIn, UserButton, SignedOut } from "@clerk/nextjs";
 import { navLinks } from "@/constants";
 import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
+
 
 const MobileNav = () => {
   const path = usePathname();
