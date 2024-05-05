@@ -3,10 +3,12 @@ import {
   createRouteMatcher
 } from '@clerk/nextjs/server';
 
+
 const isProtectedRoute = createRouteMatcher([
   '/transformations(.*)',
   '/credits(.*)',
   '/profile(.*)',
+  '/'
 
 ]);
 
