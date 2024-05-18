@@ -8,7 +8,7 @@ const isProtectedRoute = createRouteMatcher([
   '/transformations(.*)',
   '/credits(.*)',
   '/profile(.*)',
-  '/'
+  '/transformations(.*)',
 
 ]);
 
