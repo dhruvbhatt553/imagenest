@@ -37,7 +37,6 @@ import { addImage, updateImage } from "@/lib/actions/image.actions";
 import { useRouter } from "next/navigation";
 import { InsufficientCredits } from "./InsufficientCredits";
 
-
 export const formSchema = z.object({
   title: z.string(),
   aspectRatio: z.string().optional(),
@@ -103,31 +102,37 @@ const TranformationForm = ({
         prompt: values.prompt,
       };
 
-      if(action==="Add") {
+      if (action === "Add") {
         try {
-          const newImage = await addImage({image: imageData, userId, path:"/" })
-          console.log("new image",newImage,{...newImage});
-          
-          if(newImage) {
+          const newImage = await addImage({
+            image: imageData,
+            userId,
+            path: "/",
+          });
+          console.log("new image", newImage, { ...newImage });
+
+          if (newImage) {
             form.reset();
             setImage(data);
             router.push(`/transformations/${newImage._id}`);
           }
-        }
-        catch(error) {
-          console.log("Error in ADD",error);
+        } catch (error) {
+          console.log("Error in ADD", error);
         }
       }
 
-      if(action==="Update") {
+      if (action === "Update") {
         try {
-          const updatedImage = await updateImage({image: {...imageData, _id: data._id}, userId, path:`/transformations/${data._id}` })
-          if(updatedImage) {
+          const updatedImage = await updateImage({
+            image: { ...imageData, _id: data._id },
+            userId,
+            path: `/transformations/${data._id}`,
+          });
+          if (updatedImage) {
             router.push(`/transformations/${updatedImage._id}`);
           }
-        }
-        catch(error) {
-          console.log("Error in ADD",error);
+        } catch (error) {
+          console.log("Error in ADD", error);
         }
       }
     }
@@ -140,7 +145,7 @@ const TranformationForm = ({
     const imageSize = aspectRatioOptions[value as AspectRatioKey];
     setImage((prevState: any) => ({
       ...prevState,
-      aspectRation: imageSize.aspectRatio,
+      aspectRatio: imageSize.aspectRatio,
       width: imageSize.width,
       height: imageSize.height,
     }));
@@ -161,8 +166,8 @@ const TranformationForm = ({
           [fieldName === "prompt" ? "prompt" : "to"]: value,
         },
       }));
-      return onChangeField(value);
-    }, 1000);
+    }, 1000)();
+    return onChangeField(value);
   };
   const onTransformHandler = async () => {
     setIsTransforming(true);
@@ -176,19 +181,18 @@ const TranformationForm = ({
     });
   };
 
-  useEffect(()=>{
-    if((image && (type === "restore" || type === "removeBackground" )))
-      {setNewTransformation(transfromationType.config)}
-
-  },[image, transfromationType.config, type])
-
+  useEffect(() => {
+    if (image && (type === "restore" || type === "removeBackground")) {
+      setNewTransformation(transfromationType.config);
+    }
+  }, [image, transfromationType.config, type]);
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className='space-y-8'>
-          {creditBalance < Math.abs(creditFee) && <InsufficientCredits/>}
+        {creditBalance < Math.abs(creditFee) && <InsufficientCredits />}
         <CustomField
           control={form.control}
           formLabel='Image Title'
@@ -209,6 +213,7 @@ const TranformationForm = ({
             className='w-full'
             render={({ field }) => (
               <Select
+                value={field.value}
                 onValueChange={(value) =>
                   onSelectFieldHandler(value, field.onChange)
                 }>
